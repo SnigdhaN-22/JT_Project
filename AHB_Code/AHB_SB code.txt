@@ -1,0 +1,164 @@
+BCM node
+------------------------
+includes
+{
+  
+}
+
+variables
+{
+  message 0x200 b;
+}
+on sysvar BCM::Sys_BCM_ahb
+{
+  b.Ahb_Signal=@BCM::Sys_BCM_ahb;
+  output(b);
+}
+on sysvar BCM::Sys_BCM_sb
+{
+  b.SB_signal=@BCM::Sys_BCM_sb;
+  output(b);
+}
+on key 'a'
+{
+  b.dlc=0x8;
+  b.byte(0)=0x05;
+  b.byte(1)=0x2F;
+  b.byte(2)=0xA1;
+  b.byte(3)=0xA0;
+  b.byte(4)=0x03;
+  b.byte(5)=0x01;
+  output(b);
+}
+on key 'b'
+{
+  b.dlc=0x8;
+  b.byte(0)=0x05;
+  b.byte(1)=0x2F;
+  b.byte(2)=0xA1;
+  b.byte(3)=0xA0;
+  b.byte(4)=0x03;
+  b.byte(5)=0x00;
+  output(b);
+}
+on key 'c'
+{
+  b.dlc=0x8;
+  b.byte(0)=0x05;
+  b.byte(1)=0x2F;
+  b.byte(2)=0xA1;
+  b.byte(3)=0xA1;
+  b.byte(4)=0x03;
+  b.byte(5)=0x01;
+  output(b);
+}
+on key 'd'
+{
+  b.dlc=0x8;
+  b.byte(0)=0x05;
+  b.byte(1)=0x2F;
+  b.byte(2)=0xA1;
+  b.byte(3)=0xA1;
+  b.byte(4)=0x03;
+  b.byte(5)=0x00;
+  output(b);
+}
+on key 'e'
+{
+  b.dlc=0x8;
+  b.byte(0)=0x04;
+  b.byte(1)=0x2F;
+  b.byte(2)=0xA1;
+  b.byte(3)=0xA0;
+  b.byte(4)=0x00;
+  output(b);
+}
+on key 'f'
+{
+  b.dlc=0x8;
+  b.byte(0)=0x04;
+  b.byte(1)=0x2F;
+  b.byte(2)=0xA1;
+  b.byte(3)=0xA1;
+  b.byte(4)=0x00;
+  output(b);
+}
+IPC Node
+------------------
+includes
+{
+  
+}
+
+variables
+{
+  message 0x400 b;
+  int flag=0,flag1=0;
+}
+on message 0x200
+{  
+  if(this.byte(1)==0x2F)
+  {
+    if(this.byte(2)==0xA1&&this.byte(3)==0xA0)
+    {
+      if(this.byte(4)==0x03)
+      {
+        @IPC::Sys_Ahb=this.byte(5);
+        flag=1;
+        b.byte(0)=0x04;
+        b.byte(1)=0x6F;
+        b.byte(2)=0xA1;
+        b.byte(3)=0xA0;
+        b.byte(4)=0x03;
+        output(b);
+       
+      }
+      else if(this.byte(4)==0x00)
+      {
+        flag=0;
+        b.byte(0)=0x04;
+        b.byte(1)=0x6F;
+        b.byte(2)=0xA1;
+        b.byte(3)=0xA0;
+        b.byte(4)=0x00;
+        output(b);
+      }
+    }
+    else if(this.byte(2)==0xA1&&this.byte(3)==0xA1)
+    {
+      if(this.byte(4)==0x03)
+      {
+        @IPC::Sys_sb=this.byte(5);
+        flag1=1;
+        b.byte(0)=0x04;
+        b.byte(1)=0x6F;
+        b.byte(2)=0xA1;
+        b.byte(3)=0xA1;
+        b.byte(4)=0x03;
+        output(b);
+       
+      }
+      else if(this.byte(4)==0x00)
+      {
+        flag1=0;
+        b.byte(0)=0x04;
+        b.byte(1)=0x6F;
+        b.byte(2)=0xA1;
+        b.byte(3)=0xA1;
+        b.byte(4)=0x00;
+        output(b);
+      }
+    }
+    
+  }
+  
+  if(flag==0)
+  {
+    @IPC::Sys_Ahb=this.Ahb_Signal;
+    
+  }
+  if(flag1==0)
+  {
+  @IPC::Sys_sb=this.SB_signal;
+  }
+}
