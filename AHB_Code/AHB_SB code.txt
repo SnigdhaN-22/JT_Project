@@ -1,4 +1,4 @@
-BCM node
+BCM node hello this is sample 2
 ------------------------
 includes
 {
