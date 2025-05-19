@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 BCM node 
+=======
+BCM node hello this is sample in ADAS folder
+>>>>>>> 5448eb0e690cfdc2d2769baf18e7639ed12f0d29
 ------------------------
 includes
 {
