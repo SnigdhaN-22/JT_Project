@@ -1,4 +1,4 @@
-BCM node hello this is sample 2
+BCM node hello this is sample in ADAS folder
 ------------------------
 includes
 {
